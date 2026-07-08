@@ -1,0 +1,31 @@
+import GoogleSignIn from "./components/GoogleSignIn";
+import { useAuth } from "./hooks/useAuth";
+import { logout } from "./firebase/auth";
+
+function App() {
+  const { user, loading } = useAuth();
+
+  if (loading) {
+    return <h2>Loading...</h2>;
+  }
+
+  return (
+    <>
+      {!user ? (
+        <GoogleSignIn />
+      ) : (
+        <>
+          <img src={user.photoURL ?? ""} width={80} />
+
+          <h2>{user.displayName}</h2>
+
+          <p>{user.email}</p>
+
+          <button onClick={logout}>Logout</button>
+        </>
+      )}
+    </>
+  );
+}
+
+export default App;
