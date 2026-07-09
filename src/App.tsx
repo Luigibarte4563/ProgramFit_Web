@@ -1,5 +1,7 @@
 import GoogleSignIn from "./components/GoogleSignIn";
 import Home from "./components/Home";
+import Assessment from "./components/Assessment";
+import { useState } from "react";
 
 import { useAuth } from "./hooks/useAuth";
 import { logout } from "./firebase/auth";
@@ -7,6 +9,7 @@ import { logout } from "./firebase/auth";
 function App() {
   const { user, loading } = useAuth();
 
+  const [started, setStarted] = useState(false);
   // 1. Sleek, animated loading state
   if (loading) {
     return (
@@ -68,16 +71,13 @@ function App() {
       </header>
 
       {/* Main Responsive Content Area */}
-      <main className="flex-1 mx-auto max-w-7xl w-full px-4 py-8 sm:px-6 lg:px-8">
-        <div className="bg-white rounded-2xl border border-slate-100 shadow-sm p-6 sm:p-8">
-          <Home
-            user={user}
-            onStartAssessment={() => {
-              console.log("Start Assessment");
-              // Later:
-              // navigate("/assessment");
-            }}
-          />
+      <main className="flex-1 mx-auto max-w-7xl w-full px-4 py-8">
+        <div className="bg-white rounded-2xl border border-slate-100 shadow-sm p-6">
+          {!started ? (
+            <Home user={user} onStartAssessment={() => setStarted(true)} />
+          ) : (
+            <Assessment />
+          )}
         </div>
       </main>
     </div>
