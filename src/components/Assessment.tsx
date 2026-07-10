@@ -1,35 +1,89 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+
 import ProgressBar from "./ProgressBar";
 import QuestionCard from "./QuestionCard";
-import { assessmentQuestions } from "../firebase/assessmentQuestions";
 
-export default function Assessment() {
+import { assessmentQuestions } from "../firebase/assessmentQuestions";
+import {
+  loadAssessmentProgress,
+  saveAssessmentProgress,
+} from "../firebase/assessment";
+
+interface AssessmentProps {
+  onFinish: () => void;
+}
+
+export default function Assessment({ onFinish }: AssessmentProps) {
   const [currentQuestion, setCurrentQuestion] = useState(0);
 
   const [answers, setAnswers] = useState<number[]>(
     Array(assessmentQuestions.length).fill(0),
   );
 
+  const [loaded, setLoaded] = useState(false);
+
+  // Load saved assessment once
+  useEffect(() => {
+    async function loadProgress() {
+      const progress = await loadAssessmentProgress();
+
+      if (progress) {
+        setAnswers(progress.answers);
+        setCurrentQuestion(progress.currentQuestion);
+      }
+
+      setLoaded(true);
+    }
+
+    loadProgress();
+  }, []);
+
+  // Auto-save whenever answers or current question changes
+  useEffect(() => {
+    if (!loaded) return;
+
+    saveAssessmentProgress(answers, currentQuestion);
+  }, [answers, currentQuestion, loaded]);
+
   const handleAnswer = (value: number) => {
     const updated = [...answers];
     updated[currentQuestion] = value;
+
     setAnswers(updated);
   };
+
+  const handleNext = () => {
+    if (currentQuestion < assessmentQuestions.length - 1) {
+      setCurrentQuestion((prev) => prev + 1);
+    }
+  };
+
+  const handleBack = () => {
+    if (currentQuestion > 0) {
+      setCurrentQuestion((prev) => prev - 1);
+    }
+  };
+
+  const handleSelectQuestion = (index: number) => {
+    setCurrentQuestion(index);
+  };
+
+  const handleFinish = async () => {
+    await saveAssessmentProgress(answers, currentQuestion);
+
+    // TODO:
+    // Calculate program scores
+    // Save final results
+    // Mark assessment as completed
+
+    onFinish();
+  };
+
+  const answeredQuestions = answers.filter((answer) => answer !== 0).length;
 
   const isFirstQuestion = currentQuestion === 0;
   const isLastQuestion = currentQuestion === assessmentQuestions.length - 1;
 
-  const handleFinish = () => {
-    console.log("Assessment Finished!");
-    console.log(answers);
-
-    // TODO:
-    // - Calculate scores
-    // - Save to Firebase
-    // - Show recommendation page
-  };
-
-  const answeredQuestions = answers.filter((answer) => answer !== 0).length;
   return (
     <div className="space-y-6">
       <ProgressBar
@@ -37,7 +91,7 @@ export default function Assessment() {
         answered={answeredQuestions}
         total={assessmentQuestions.length}
         answers={answers}
-        onSelectQuestion={setCurrentQuestion}
+        onSelectQuestion={handleSelectQuestion}
       />
 
       <QuestionCard
@@ -47,9 +101,8 @@ export default function Assessment() {
       />
 
       <div className="flex justify-between">
-        {/* Back Button */}
         <button
-          onClick={() => setCurrentQuestion((prev) => prev - 1)}
+          onClick={handleBack}
           disabled={isFirstQuestion}
           className={`rounded-lg px-4 py-2 font-medium transition ${
             isFirstQuestion
@@ -60,10 +113,9 @@ export default function Assessment() {
           Back
         </button>
 
-        {/* Next / Finish Button */}
         {!isLastQuestion ? (
           <button
-            onClick={() => setCurrentQuestion((prev) => prev + 1)}
+            onClick={handleNext}
             className="rounded-lg bg-blue-600 px-4 py-2 font-medium text-white transition hover:bg-blue-700"
           >
             Next

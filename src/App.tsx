@@ -1,22 +1,27 @@
+import { useState } from "react";
+
 import GoogleSignIn from "./components/GoogleSignIn";
 import Home from "./components/Home";
 import Assessment from "./components/Assessment";
-import { useState } from "react";
+import Results from "./components/Results";
 
 import { useAuth } from "./hooks/useAuth";
 import { logout } from "./firebase/auth";
 
+type Screen = "home" | "assessment" | "results";
+
 function App() {
   const { user, loading } = useAuth();
 
-  const [started, setStarted] = useState(false);
-  // 1. Sleek, animated loading state
+  const [screen, setScreen] = useState<Screen>("home");
+
+  // Loading State
   if (loading) {
     return (
       <div className="flex h-screen items-center justify-center bg-slate-50">
         <div className="flex flex-col items-center gap-3">
           <div className="h-10 w-10 animate-spin rounded-full border-4 border-slate-200 border-t-blue-600"></div>
-          <p className="text-sm font-medium text-slate-500 animate-pulse">
+          <p className="animate-pulse text-sm font-medium text-slate-500">
             Loading ProgramFit...
           </p>
         </div>
@@ -24,38 +29,39 @@ function App() {
     );
   }
 
-  // 2. Unauthenticated State (Letting the GoogleSignIn card handle centering)
+  // Login Screen
   if (!user) {
     return <GoogleSignIn />;
   }
 
-  // 3. Authenticated Dashboard Layout
   return (
-    <div className="min-h-screen bg-slate-50/50 flex flex-col font-sans antialiased">
-      {/* Premium Responsive Navbar */}
+    <div className="flex min-h-screen flex-col bg-slate-50/50 font-sans antialiased">
+      {/* Navbar */}
       <header className="sticky top-0 z-50 border-b border-slate-100 bg-white/80 backdrop-blur-md">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="flex h-16 items-center justify-between gap-4">
-            {/* Branding */}
+            {/* Logo */}
             <div className="flex items-center gap-2.5">
-              <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-blue-600 font-bold text-white text-base shadow-sm">
+              <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-blue-600 text-base font-bold text-white shadow-sm">
                 PF
               </div>
+
               <span className="text-lg font-bold tracking-tight text-slate-900">
                 Program<span className="text-blue-600">Fit</span>
               </span>
-              <span className="hidden sm:inline-block text-xs font-medium text-slate-400 bg-slate-100 px-2 py-0.5 rounded-full">
+
+              <span className="hidden rounded-full bg-slate-100 px-2 py-0.5 text-xs font-medium text-slate-400 sm:inline-block">
                 Assessment System
               </span>
             </div>
 
-            {/* User Profile & Actions */}
+            {/* User */}
             <div className="flex items-center gap-4">
               {user.photoURL && (
                 <img
                   src={user.photoURL}
                   alt={user.displayName || "User Profile"}
-                  className="hidden xs:block h-8 w-8 rounded-full border border-slate-200 object-cover"
+                  className="hidden h-8 w-8 rounded-full border border-slate-200 object-cover xs:block"
                 />
               )}
 
@@ -70,14 +76,21 @@ function App() {
         </div>
       </header>
 
-      {/* Main Responsive Content Area */}
-      <main className="flex-1 mx-auto max-w-7xl w-full px-4 py-8">
-        <div className="bg-white rounded-2xl border border-slate-100 shadow-sm p-6">
-          {!started ? (
-            <Home user={user} onStartAssessment={() => setStarted(true)} />
-          ) : (
-            <Assessment />
+      {/* Main Content */}
+      <main className="mx-auto flex-1 w-full max-w-7xl px-4 py-8">
+        <div className="rounded-2xl border border-slate-100 bg-white p-6 shadow-sm">
+          {screen === "home" && (
+            <Home
+              user={user}
+              onStartAssessment={() => setScreen("assessment")}
+            />
           )}
+
+          {screen === "assessment" && (
+            <Assessment onFinish={() => setScreen("results")} />
+          )}
+
+          {screen === "results" && <Results />}
         </div>
       </main>
     </div>
