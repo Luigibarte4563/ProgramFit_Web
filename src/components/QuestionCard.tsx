@@ -1,4 +1,4 @@
-import { assessmentQuestions } from "../firebase/assessmentQuestions";
+import { assessmentQuestions } from "../data/assessmentQuestions";
 import LikertScale from "./LikertScale";
 
 interface QuestionCardProps {
@@ -13,6 +13,16 @@ export default function QuestionCard({
   onAnswer,
 }: QuestionCardProps) {
   const question = assessmentQuestions[index];
+
+  if (!question) {
+    return (
+      <div className="rounded-lg border border-red-300 bg-red-50 p-4">
+        <p className="font-semibold text-red-600">
+          Invalid question index: {index}
+        </p>
+      </div>
+    );
+  }
 
   return (
     <div>

@@ -13,7 +13,7 @@ export default function ResultCard({
 }: ResultCardProps) {
   return (
     <div className="rounded-xl border bg-white p-6 shadow">
-      <div className="mb-4 flex items-center justify-between">
+      <div className="flex items-center justify-between">
         <h2 className="text-xl font-bold">
           #{rank} {program}
         </h2>
@@ -23,7 +23,7 @@ export default function ResultCard({
         </span>
       </div>
 
-      {description && <p className="text-gray-600">{description}</p>}
+      {description && <p className="mt-4 text-gray-600">{description}</p>}
     </div>
   );
 }

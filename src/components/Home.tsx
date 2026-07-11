@@ -1,8 +1,8 @@
+import { useNavigate } from "react-router-dom";
 import type { User } from "firebase/auth";
 
 interface HomeProps {
   user: User;
-  onStartAssessment: () => void;
 }
 
 const schools = [
@@ -62,7 +62,9 @@ const schools = [
   },
 ];
 
-export default function Home({ user, onStartAssessment }: HomeProps) {
+export default function Home({ user }: HomeProps) {
+  const navigate = useNavigate();
+
   return (
     <div className="min-h-screen bg-slate-100">
       {/* Hero */}
@@ -83,7 +85,7 @@ export default function Home({ user, onStartAssessment }: HomeProps) {
             </p>
 
             <button
-              onClick={onStartAssessment}
+              onClick={() => navigate("/assessment")}
               className="mt-8 rounded-lg bg-white px-8 py-3 text-lg font-semibold text-blue-700 shadow transition hover:bg-blue-50"
             >
               Start Assessment
@@ -97,7 +99,7 @@ export default function Home({ user, onStartAssessment }: HomeProps) {
         <div className="rounded-xl bg-white p-8 shadow">
           <h2 className="mb-4 text-2xl font-bold">About the Assessment</h2>
 
-          <p className="text-gray-700 leading-7">
+          <p className="leading-7 text-gray-700">
             This assessment helps identify your interests across different
             academic fields. Based on your responses, the system calculates your
             strengths and recommends the university programs that best match
