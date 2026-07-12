@@ -50,8 +50,8 @@ export default function Navbar({
               <NavLink to="/" end className={linkClass}>
                 Home
               </NavLink>
-              <NavLink to="/history" className={linkClass}>
-                History
+              <NavLink to="/results" className={linkClass}>
+                Results
               </NavLink>
             </div>
 
@@ -144,11 +144,11 @@ export default function Navbar({
               Home
             </NavLink>
             <NavLink
-              to="/history"
+              to="/results"
               className={mobileLinkClass}
               onClick={() => setIsOpen(false)}
             >
-              History
+              Results
             </NavLink>
           </div>
 

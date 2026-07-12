@@ -1,43 +1,60 @@
 // src/utils/calculateResults.ts
 
 import { assessmentQuestions } from "../data/assessmentQuestions";
+import type { AssessmentResult } from "../firebase/assessment";
 
-export interface ProgramResult {
-  rank: number;
-  program: string;
-  percentage: number;
-  score: number;
-  maxScore: number;
-}
+const descriptions: Record<string, string> = {
+  "School of Information Technology":
+    "You enjoy technology, problem-solving, and creating digital solutions.",
 
-export function calculateResults(answers: number[]): ProgramResult[] {
+  "School of Engineering":
+    "You have strong analytical skills and enjoy designing and building systems.",
+
+  "School of Teacher Education":
+    "You enjoy helping others learn and making a positive impact through education.",
+
+  "School of Business and Accountancy":
+    "You are interested in business, leadership, finance, and entrepreneurship.",
+
+  "School of International Hospitality Management":
+    "You enjoy serving people and working in tourism and hospitality industries.",
+
+  "School of Humanities":
+    "You are interested in communication, psychology, and understanding people.",
+
+  "School of Health and Sciences":
+    "You are passionate about healthcare and helping improve people's lives.",
+
+  "School of Criminology":
+    "You are interested in justice, public safety, and law enforcement.",
+};
+
+export function calculateResults(
+  answers: number[]
+): AssessmentResult[] {
   const categoryScores: Record<string, number> = {};
   const categoryMaxScores: Record<string, number> = {};
 
   assessmentQuestions.forEach((question, index) => {
     const category = question.category;
 
-    if (!categoryScores[category]) {
-      categoryScores[category] = 0;
-      categoryMaxScores[category] = 0;
-    }
+    categoryScores[category] =
+      (categoryScores[category] ?? 0) + (answers[index] ?? 0);
 
-    // User score (1–5)
-    categoryScores[category] += answers[index] ?? 0;
-
-    // Every question has a maximum of 5 points
-    categoryMaxScores[category] += 5;
+    categoryMaxScores[category] =
+      (categoryMaxScores[category] ?? 0) + 5;
   });
 
-  const results: ProgramResult[] = Object.keys(categoryScores).map(
+  const results: AssessmentResult[] = Object.keys(categoryScores).map(
     (category) => ({
       rank: 0,
       program: category,
-      score: categoryScores[category],
-      maxScore: categoryMaxScores[category],
       percentage: Math.round(
         (categoryScores[category] / categoryMaxScores[category]) * 100
       ),
+      description:
+        descriptions[category] ??
+        "This program matches your assessment profile.",
     })
   );
 

@@ -1,3 +1,5 @@
+import { deleteField } from "firebase/firestore";
+
 import {
   doc,
   getDoc,
@@ -81,4 +83,19 @@ export async function loadAssessmentResults(): Promise<
   if (!snapshot.exists()) return [];
 
   return snapshot.data().assessmentResults?.results ?? [];
+}
+
+export async function resetAssessment() {
+  const user = auth.currentUser;
+
+  if (!user) return;
+
+  await setDoc(
+    doc(db, "users", user.uid),
+    {
+      assessment: deleteField(),
+      assessmentResults: deleteField(),
+    },
+    { merge: true }
+  );
 }

@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { calculateResults } from "../utils/calculateResults";
 
 import ProgressBar from "./ProgressBar";
 import QuestionCard from "./QuestionCard";
@@ -78,14 +79,12 @@ export default function Assessment() {
   const handleFinish = async () => {
     if (!isAssessmentComplete) return;
 
-    // Save latest progress
     await saveAssessmentProgress(answers, currentQuestion);
 
-    // TODO:
-    // Calculate assessment results
-    // await saveAssessmentResults(results);
+    const results = calculateResults(answers);
 
-    // Navigate to Results page
+    await saveAssessmentResults(results);
+
     navigate("/results");
   };
 
