@@ -1,11 +1,12 @@
 import { Routes, Route, Navigate } from "react-router-dom";
 
 import Navbar from "./components/Navbar";
+import LoadingScreen from "./components/LoadingScreen";
 import GoogleSignIn from "./components/GoogleSignIn";
 import Home from "./components/Home";
 import Assessment from "./components/Assessment";
 import Results from "./components/Results";
-import History from "./components/HIstory";
+import History from "./components/History";
 
 import { useAuth } from "./hooks/useAuth";
 import { logout } from "./firebase/auth";
@@ -14,7 +15,7 @@ function App() {
   const { user, loading } = useAuth();
 
   if (loading) {
-    return <div>Loading...</div>;
+    return <LoadingScreen />;
   }
 
   if (!user) {
