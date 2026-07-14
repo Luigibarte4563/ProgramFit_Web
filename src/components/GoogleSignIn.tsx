@@ -1,6 +1,26 @@
 import React, { useMemo } from "react";
 import { signInWithGoogle } from "../firebase/auth";
 
+// Modern SVG Warning Icon Component
+function AlertTriangleIcon() {
+  return (
+    <svg
+      className="w-6 h-6 text-amber-600 flex-shrink-0 mt-0.5"
+      xmlns="http://www.w3.org/2000/svg"
+      fill="none"
+      viewBox="0 0 24 24"
+      strokeWidth="2"
+      stroke="currentColor"
+    >
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126ZM12 15.75h.007v.008H12v-.008Z"
+      />
+    </svg>
+  );
+}
+
 export default function GoogleSignIn() {
   const isInAppBrowser = useMemo(() => {
     const ua = navigator.userAgent || "";
@@ -45,8 +65,9 @@ export default function GoogleSignIn() {
         {/* Messenger/Facebook/Instagram Browser Warning */}
         {isInAppBrowser ? (
           <div className="rounded-xl border border-amber-300 bg-amber-50 p-5">
-            <div className="flex items-start gap-3">
-              <div className="text-2xl">⚠️</div>
+            <div className="flex items-start gap-3.5">
+              {/* Replaced emoji with the new Warning SVG */}
+              <AlertTriangleIcon />
 
               <div>
                 <h3 className="font-semibold text-amber-900">
