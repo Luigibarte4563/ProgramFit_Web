@@ -12,6 +12,12 @@ ProgramFit guides students through a structured assessment questionnaire, evalua
 
 ---
 
+## 🌐 Live Demo
+
+- **Live Demo:** https://luigibarte4563.github.io/ProgramFit_Web/
+
+---
+
 ## ⚡ Core Features
 
 * **🔐 Secure Authentication:** Seamless Google Sign-In powered by Firebase Auth.
@@ -180,7 +186,6 @@ The application analyzes the collected responses and maps them to predefined uni
 **Luigi Barte**
 
 - **GitHub:** https://github.com/Luigibarte4563
-- **Live Demo:** https://luigibarte4563.github.io/ProgramFit_Web/
 
 ---
 
