@@ -92,14 +92,98 @@ src/
 ├── App.tsx               # Main Core Controller
 ├── main.tsx              # Application Entry Point
 └── index.css             # Tailwind Directives & Custom Brutalist Utility Classes
-🚀 Getting Started1. Clone & NavigateBashgit clone [https://github.com/Luigibarte4563/ProgramFit_Web.git](https://github.com/Luigibarte4563/ProgramFit_Web.git)
+# 🚀 Getting Started
+
+## 1. Clone the Repository
+
+```bash
+git clone https://github.com/Luigibarte4563/ProgramFit_Web.git
 cd ProgramFit_Web
-2. Install DependenciesBashnpm install
-3. Environment ConfigurationCreate a .env file in the root directory and populate it with your Firebase project keys:  Code snippetVITE_FIREBASE_API_KEY=YOUR_API_KEY
+```
+
+## 2. Install Dependencies
+
+```bash
+npm install
+```
+
+## 3. Environment Configuration
+
+Create a `.env` file in the root directory and add your Firebase configuration.
+
+```env
+VITE_FIREBASE_API_KEY=YOUR_API_KEY
 VITE_FIREBASE_AUTH_DOMAIN=YOUR_AUTH_DOMAIN
 VITE_FIREBASE_PROJECT_ID=YOUR_PROJECT_ID
 VITE_FIREBASE_STORAGE_BUCKET=YOUR_STORAGE_BUCKET
 VITE_FIREBASE_MESSAGING_SENDER_ID=YOUR_MESSAGING_SENDER_ID
 VITE_FIREBASE_APP_ID=YOUR_APP_ID
-▶️ Script CommandsTaskCommandDescriptionDevelopmentnpm run devLaunches local development server at http://localhost:5173/Network Hostnpm run dev -- --hostShares the dev server across your local area network (LAN)Production Buildnpm run buildCompiles and optimizes assets into the /dist directoryPreview Buildnpm run previewSpins up a local server to test production build performance📖 System Workflow[ Google Login ] ➔ [ Start Assessment ] ➔ [ Answer Likert Questions ] ➔ [ Firebase Processing ] ➔ [ Dynamic Career Results ]
-Authentication: User authenticates via Google Popup Redirect.Evaluation: Application initializes query dataset; monitors responses dynamically using real-time local hooks.Synchronization: Final scores sync to Firestore underneath the user's specific cryptographic UID.Output: The UI maps results against existing University Program matrices to deliver localized matches.🔮 Roadmap / Future Enhancements[ ] Advanced analytical user dashboard tracking historical shifts over time.[ ] Automated PDF export utility for physical documentation of results.[ ] Explanatory AI module breaking down why a specific program was matched.[ ] Institutional Admin portal for academic counselors.[ ] Universal Dark Mode mapping for Neo-Brutalist themes.👨‍💻 AuthorLuigi BarteGitHub: @Luigibarte4563Deployment: ProgramFit Web Application📄 LicenseThis project is open-source and intended exclusively for educational, academic, and non-commercial purposes.
+```
+
+---
+
+# ▶️ Script Commands
+
+| Task | Command | Description |
+|------|---------|-------------|
+| Development | `npm run dev` | Launches the local development server at `http://localhost:5173/` |
+| Network Host | `npm run dev -- --host` | Shares the development server across your local network (LAN). |
+| Production Build | `npm run build` | Builds and optimizes the application into the `dist` directory. |
+| Preview Build | `npm run preview` | Runs a local server to preview the production build. |
+
+---
+
+# 📖 System Workflow
+
+```text
+Google Login
+      │
+      ▼
+Start Assessment
+      │
+      ▼
+Answer Likert Questions
+      │
+      ▼
+Firebase Processing
+      │
+      ▼
+Dynamic Career Results
+```
+
+### 🔐 Authentication
+Users securely authenticate using **Firebase Google Authentication** through a Google sign-in popup.
+
+### 📝 Evaluation
+The system loads the assessment questionnaire and records user responses using React state management for real-time interaction.
+
+### ☁️ Synchronization
+Upon assessment completion, responses and calculated scores are securely stored in **Cloud Firestore** under the authenticated user's unique Firebase UID.
+
+### 🎯 Results
+The application analyzes the collected responses and maps them to predefined university program categories, generating personalized career recommendations.
+
+---
+
+# 🔮 Roadmap
+
+- [ ] Assessment history and analytics dashboard
+- [ ] PDF export for assessment results
+- [ ] AI-powered explanation of recommendations
+- [ ] Admin portal for academic counselors
+- [ ] Dark mode support using the Soft Neo-Brutalist design system
+
+---
+
+# 👨‍💻 Author
+
+**Luigi Barte**
+
+- **GitHub:** https://github.com/Luigibarte4563
+- **Live Demo:** https://luigibarte4563.github.io/ProgramFit_Web/
+
+---
+
+# 📄 License
+
+This project is open-source and intended for **educational, academic, and non-commercial purposes only**.
