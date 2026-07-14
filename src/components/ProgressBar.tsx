@@ -17,74 +17,88 @@ export default function ProgressBar({
 }: ProgressBarProps) {
   const percentage = (answered / total) * 100;
 
-  // 1. Create a ref to store references to all the button elements
+  // Create a ref to store references to all the button elements
   const buttonRefs = useRef<(HTMLButtonElement | null)[]>([]);
 
-  // 2. Automatically scroll to the active question whenever 'current' changes
+  // Automatically scroll to the active question whenever 'current' changes
   useEffect(() => {
-    // Array indexes are 0-based, so current question is at index (current - 1)
     const activeIndex = current - 1;
     const activeButton = buttonRefs.current[activeIndex];
 
     if (activeButton) {
       activeButton.scrollIntoView({
         behavior: "smooth",
-        block: "nearest", // Prevents jumping the whole page vertically
-        inline: "center", // Centers the active box in the horizontal scroll view
+        block: "nearest",
+        inline: "center",
       });
     }
   }, [current]);
 
   return (
-    <>
-      {/* Changed mobile to flex-col and desktop (sm) to flex-row */}
-      <div className="flex flex-col gap-4 sm:flex-row sm:items-center w-full">
-        {/* Progress Bar Container */}
-        <div className="flex-1 min-w-[120px]">
-          <div className="mb-2 flex justify-between text-xs sm:text-sm">
-            <span className="whitespace-nowrap">
-              Q {current} of {total}
-            </span>
-            <span>{Math.round(percentage)}%</span>
-          </div>
-
-          <div className="h-3 overflow-hidden rounded-full bg-gray-200">
-            <div
-              className="h-full bg-blue-600 transition-all duration-300"
-              style={{ width: `${percentage}%` }}
-            />
-          </div>
+    <div className="flex flex-col gap-6 w-full rounded-2xl border-2 border-[#1D3557] bg-[#FFFFFF] p-4 sm:p-5 shadow-[4px_4px_0px_0px_#1D3557] md:flex-row md:items-center">
+      {/* Progress Bar Container */}
+      <div className="flex-1 min-w-[140px]">
+        <div className="mb-2 flex flex-row items-center justify-between text-sm font-extrabold text-[#0D1B2A]">
+          <span className="whitespace-nowrap">
+            Question <span className="text-[#2F8CE5]">{current}</span> of{" "}
+            {total}
+          </span>
         </div>
 
-        {/* Question Navigator */}
-        {/* Keeps them strictly in 1 row on mobile with horizontal scroll, wraps on desktop */}
-        <div className="flex flex-row flex-nowrap gap-2 overflow-x-auto pb-2 max-w-full sm:flex-wrap no-scrollbar">
-          {answers.map((answer, index) => {
-            const isCurrent = index + 1 === current;
+        {/* Neo-brutalist Main Track */}
+        <div className="relative h-6 overflow-hidden rounded-xl border-2 border-[#1D3557] bg-[#FFFFFF]">
+          {/* Animated Internal Progress Fill */}
+          <div
+            className="h-full bg-[#2F8CE5] border-r-2 border-[#1D3557] transition-all duration-300 ease-out"
+            style={{ width: `${percentage}%` }}
+          />
 
-            return (
-              <button
-                key={index}
-                // 3. Assign the element to our ref array
-                ref={(el) => {
-                  buttonRefs.current[index] = el;
-                }}
-                onClick={() => onSelectQuestion(index)}
-                className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-md text-sm font-semibold text-white transition
-                ${
-                  isCurrent
-                    ? "bg-blue-600 ring-2 ring-blue-300"
-                    : answer !== 0
-                      ? "bg-green-600 hover:bg-green-700"
-                      : "bg-red-500 hover:bg-red-600"
-                }`}
-              >
-                {index + 1}
-              </button>
-            );
-          })}
+          {/* Centered Fixed Percentage */}
+          <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+            <span
+              className={`text-xs font-extrabold select-none transition-colors duration-300 ${
+                percentage > 52 ? "text-white" : "text-[#0D1B2A]"
+              }`}
+            >
+              {Math.round(percentage)}%
+            </span>
+          </div>
         </div>
       </div>
-    </>
+
+      {/* Question Navigator */}
+      <div className="flex flex-row flex-nowrap gap-2 overflow-x-auto pb-2 max-w-full sm:flex-wrap no-scrollbar md:pb-0">
+        {answers.map((answer, index) => {
+          const isCurrent = index + 1 === current;
+          const isAnswered = answer !== 0;
+
+          // Compute dynamic styling matching your design token behavior
+          let dynamicClasses = "";
+          if (isCurrent) {
+            dynamicClasses =
+              "bg-[#2F8CE5] text-[#FFFFFF] shadow-[2px_2px_0px_0px_#1D3557] translate-y-0";
+          } else if (isAnswered) {
+            dynamicClasses =
+              "bg-[#F7EBE1] text-[#0D1B2A] hover:bg-[#2F8CE5]/20 hover:text-[#000000] shadow-[3px_3px_0px_0px_#1D3557] active:translate-y-0.5 active:shadow-[1px_1px_0px_0px_#1D3557]";
+          } else {
+            dynamicClasses =
+              "bg-[#FFFFFF] text-[#0D1B2A] hover:bg-[#F7EBE1] shadow-[3px_3px_0px_0px_#1D3557] active:translate-y-0.5 active:shadow-[1px_1px_0px_0px_#1D3557]";
+          }
+
+          return (
+            <button
+              key={index}
+              ref={(el) => {
+                buttonRefs.current[index] = el;
+              }}
+              onClick={() => onSelectQuestion(index)}
+              className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-xl text-sm font-black border-2 border-[#1D3557] transition-all duration-150 ${dynamicClasses}`}
+            >
+              {index + 1}
+            </button>
+          );
+        })}
+      </div>
+    </div>
   );
 }

@@ -6,7 +6,6 @@ import GoogleSignIn from "./components/GoogleSignIn";
 import Home from "./components/Home";
 import Assessment from "./components/Assessment";
 import Results from "./components/Results";
-import History from "./components/History";
 
 import { useAuth } from "./hooks/useAuth";
 import { logout } from "./firebase/auth";
@@ -37,8 +36,6 @@ function App() {
           <Route path="/assessment" element={<Assessment />} />
 
           <Route path="/results" element={<Results />} />
-
-          <Route path="/history" element={<History />} />
 
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>

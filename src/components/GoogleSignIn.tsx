@@ -45,19 +45,24 @@ export default function GoogleSignIn() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-slate-50 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-md w-full space-y-8 p-8 bg-white rounded-2xl shadow-xl shadow-blue-100/50 border border-slate-100 transition-all">
+    <div className="min-h-screen flex items-center justify-center bg-[#F7EBE1] px-4 sm:px-6 lg:px-8">
+      {/* Container features:
+        - Background: Pure White (#FFFFFF)
+        - Border: Custom Muted Gray (#C5C5C5)
+        - Hard Shadow: Custom Dark Blue/Grey (#1D3557) with a structural style 
+      */}
+      <div className="max-w-md w-full space-y-8 p-8 bg-[#FFFFFF] rounded-2xl border-2 border-[#C5C5C5] shadow-[8px_8px_0px_0px_#1D3557] transition-all">
         {/* Branding */}
         <div className="text-center">
-          <div className="inline-flex items-center justify-center w-16 h-16 rounded-xl bg-blue-600 text-white font-bold text-2xl shadow-lg shadow-blue-600/30 mb-4">
+          <div className="inline-flex items-center justify-center w-16 h-16 rounded-xl bg-[#2F8CE5] text-[#FFFFFF] font-bold text-2xl shadow-[4px_4px_0px_0px_#1D3557] mb-4">
             PF
           </div>
 
-          <h2 className="text-3xl font-bold text-slate-900 tracking-tight">
-            Program<span className="text-blue-600">Fit</span>
+          <h2 className="text-3xl font-bold text-[#000000] tracking-tight">
+            Program<span className="text-[#2F8CE5]">Fit</span>
           </h2>
 
-          <p className="mt-2 text-sm text-slate-500">
+          <p className="mt-2 text-sm text-[#0D1B2A]">
             Discover your ideal path. Let's get your assessment started.
           </p>
         </div>
@@ -66,7 +71,6 @@ export default function GoogleSignIn() {
         {isInAppBrowser ? (
           <div className="rounded-xl border border-amber-300 bg-amber-50 p-5">
             <div className="flex items-start gap-3.5">
-              {/* Replaced emoji with the new Warning SVG */}
               <AlertTriangleIcon />
 
               <div>
@@ -102,7 +106,7 @@ export default function GoogleSignIn() {
           <div className="space-y-4">
             <button
               onClick={handleLogin}
-              className="group relative w-full flex justify-center items-center gap-3 px-4 py-3 border border-slate-200 text-sm font-medium rounded-xl text-slate-700 bg-white hover:bg-slate-50 hover:border-blue-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-200 shadow-sm"
+              className="group relative w-full flex justify-center items-center gap-3 px-4 py-3 border border-[#C5C5C5] text-sm font-semibold rounded-xl text-[#0D1B2A] bg-[#FFFFFF] hover:bg-[#F7EBE1] hover:border-[#2F8CE5] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#2F8CE5] transition-all duration-200 shadow-[2px_2px_0px_0px_#1D3557] active:translate-y-0.5 active:shadow-[1px_1px_0px_0px_#1D3557]"
             >
               <svg className="w-5 h-5" viewBox="0 0 24 24">
                 <path
@@ -123,15 +127,13 @@ export default function GoogleSignIn() {
                 />
               </svg>
 
-              <span className="font-semibold text-slate-800">
-                Continue with Google
-              </span>
+              <span>Continue with Google</span>
             </button>
           </div>
         )}
 
         <div className="text-center pt-2">
-          <p className="text-xs text-slate-400">
+          <p className="text-xs text-[#C5C5C5]">
             Secure authentication powered by Firebase.
           </p>
         </div>

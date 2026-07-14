@@ -8,7 +8,7 @@ interface NavbarProps {
 }
 
 export default function Navbar({
-  title = "Career Assessment",
+  title = "ProgramFit",
   userName,
   onLogout,
 }: NavbarProps) {
@@ -17,40 +17,46 @@ export default function Navbar({
   // Prevent page scrolling while mobile menu is open
   useEffect(() => {
     document.body.style.overflow = isOpen ? "hidden" : "auto";
-
     return () => {
       document.body.style.overflow = "auto";
     };
   }, [isOpen]);
 
+  // Neo-brutalist custom link styling with hard borders and offsets for selected state
   const linkClass = ({ isActive }: { isActive: boolean }) =>
-    `rounded-md px-3 py-2 text-sm font-medium transition-all duration-200 ${
+    `rounded-xl px-4 py-2 text-sm font-bold border-2 border-[#1D3557] transition-all duration-200 ${
       isActive
-        ? "bg-slate-100 text-slate-900 shadow-sm"
-        : "text-slate-600 hover:bg-slate-50 hover:text-slate-900"
+        ? "bg-[#2F8CE5] text-[#FFFFFF] shadow-[2px_2px_0px_0px_#1D3557]"
+        : "bg-[#FFFFFF] text-[#0D1B2A] hover:bg-[#F7EBE1] hover:text-[#000000]"
     }`;
 
   const mobileLinkClass = ({ isActive }: { isActive: boolean }) =>
-    `block rounded-md px-3 py-2 text-base font-medium transition ${
+    `block rounded-xl px-4 py-3 text-base font-bold border-2 border-[#1D3557] transition-all ${
       isActive
-        ? "bg-slate-100 font-semibold text-slate-900"
-        : "text-slate-600 hover:bg-slate-50 hover:text-slate-900"
+        ? "bg-[#2F8CE5] text-[#FFFFFF] shadow-[3px_3px_0px_0px_#1D3557]"
+        : "bg-[#FFFFFF] text-[#0D1B2A] hover:bg-[#F7EBE1]"
     }`;
 
   const userInitial = userName ? userName.charAt(0).toUpperCase() : "";
 
   return (
     <>
-      <nav className="sticky top-0 z-50 border-b border-slate-200 bg-white">
-        <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
-          {/* Logo */}
-          <h1 className="text-xl font-bold tracking-tight text-slate-900">
-            {title}
+      <nav className="sticky top-0 z-50 border-b-2 border-[#C5C5C5] bg-[#FFFFFF] shadow-[0px_4px_0px_0px_#1D3557]">
+        <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
+          {/* Logo Branding / Dynamic Title */}
+          <h1 className="text-2xl font-bold tracking-tight text-[#000000]">
+            {title === "ProgramFit" ? (
+              <>
+                Program<span className="text-[#2F8CE5]">Fit</span>
+              </>
+            ) : (
+              title
+            )}
           </h1>
 
-          {/* Desktop */}
+          {/* Desktop Navigation */}
           <div className="ml-auto hidden items-center gap-6 md:flex">
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-3">
               <NavLink to="/" end className={linkClass}>
                 Home
               </NavLink>
@@ -60,16 +66,18 @@ export default function Navbar({
               </NavLink>
             </div>
 
-            <div className="flex items-center gap-4 border-l border-slate-200 pl-6">
+            <div className="flex items-center gap-4 border-l-2 border-[#C5C5C5] pl-6">
               {userName && (
                 <div className="flex items-center gap-3">
-                  <div className="flex h-8 w-8 items-center justify-center rounded-full bg-indigo-600 text-sm font-semibold text-white">
+                  <div className="flex h-9 w-9 items-center justify-center rounded-full bg-[#2F8CE5] text-sm font-extrabold text-[#FFFFFF] border-2 border-[#1D3557] shadow-[2px_2px_0px_0px_#1D3557] object-cover">
                     {userInitial}
                   </div>
 
-                  <span className="text-sm text-slate-600">
+                  <span className="text-sm font-medium text-[#0D1B2A]">
                     Welcome,{" "}
-                    <strong className="text-slate-900">{userName}</strong>
+                    <strong className="font-bold text-[#000000]">
+                      {userName}
+                    </strong>
                   </span>
                 </div>
               )}
@@ -77,7 +85,7 @@ export default function Navbar({
               {onLogout && (
                 <button
                   onClick={onLogout}
-                  className="rounded-md border border-slate-200 bg-white px-3 py-1.5 text-sm font-medium text-slate-700 transition hover:border-red-200 hover:bg-red-50 hover:text-red-600"
+                  className="rounded-xl border-2 border-[#1D3557] bg-[#EA4335] px-4 py-2 text-sm font-bold text-[#FFFFFF] shadow-[2px_2px_0px_0px_#1D3557] hover:bg-red-700 active:translate-y-0.5 active:shadow-[1px_1px_0px_0px_#1D3557] transition-all duration-200"
                 >
                   Logout
                 </button>
@@ -85,17 +93,17 @@ export default function Navbar({
             </div>
           </div>
 
-          {/* Mobile Button */}
+          {/* Mobile Menu Button Container */}
           <button
             onClick={() => setIsOpen((prev) => !prev)}
-            className="rounded-md p-2 text-slate-600 hover:bg-slate-100 md:hidden"
+            className="rounded-xl p-2 border-2 border-[#1D3557] bg-[#FFFFFF] text-[#0D1B2A] hover:bg-[#F7EBE1] shadow-[2px_2px_0px_0px_#1D3557] active:translate-y-0.5 active:shadow-[0px_0px_0px_0px_#1D3557] md:hidden transition-all"
           >
             {isOpen ? (
               <svg
                 className="h-6 w-6"
                 fill="none"
                 stroke="currentColor"
-                strokeWidth={1.5}
+                strokeWidth={2.5}
                 viewBox="0 0 24 24"
               >
                 <path
@@ -109,7 +117,7 @@ export default function Navbar({
                 className="h-6 w-6"
                 fill="none"
                 stroke="currentColor"
-                strokeWidth={1.5}
+                strokeWidth={2.5}
                 viewBox="0 0 24 24"
               >
                 <path
@@ -122,10 +130,10 @@ export default function Navbar({
           </button>
         </div>
 
-        {/* Mobile Dropdown */}
+        {/* Mobile Dropdown Panel Menu */}
         {isOpen && (
-          <div className="absolute left-0 top-full z-50 w-full border-t border-slate-200 bg-white shadow-xl md:hidden">
-            <div className="space-y-2 px-4 py-4">
+          <div className="absolute left-0 top-full z-50 w-full border-b-4 border-[#1D3557] border-t-2 border-[#C5C5C5] bg-[#FFFFFF] shadow-2xl md:hidden animate-in fade-in slide-in-from-top-4 duration-200">
+            <div className="space-y-3 px-4 py-5">
               <NavLink
                 to="/"
                 end
@@ -145,16 +153,13 @@ export default function Navbar({
             </div>
 
             {(userName || onLogout) && (
-              <div className="border-t border-slate-200 px-4 py-4">
+              <div className="border-t-2 border-[#F7EBE1] px-4 py-5 bg-[#F7EBE1]/30">
                 {userName && (
                   <div className="mb-4 flex items-center gap-3">
-                    <div className="flex h-10 w-10 items-center justify-center rounded-full bg-indigo-600 font-semibold text-white">
+                    <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[#2F8CE5] font-extrabold text-[#FFFFFF] border-2 border-[#1D3557] shadow-[2px_2px_0px_0px_#1D3557]">
                       {userInitial}
                     </div>
-
-                    <span className="font-medium text-slate-800">
-                      {userName}
-                    </span>
+                    <span className="font-bold text-[#0D1B2A]">{userName}</span>
                   </div>
                 )}
 
@@ -164,7 +169,7 @@ export default function Navbar({
                       setIsOpen(false);
                       onLogout();
                     }}
-                    className="w-full rounded-md bg-red-600 px-4 py-2 font-medium text-white transition hover:bg-red-700"
+                    className="w-full rounded-xl bg-[#EA4335] border-2 border-[#1D3557] px-4 py-3 font-bold text-[#FFFFFF] shadow-[4px_4px_0px_0px_#1D3557] hover:bg-red-700 active:translate-y-0.5 active:shadow-[2px_2px_0px_0px_#1D3557] transition-all"
                   >
                     Logout
                   </button>
@@ -175,10 +180,10 @@ export default function Navbar({
         )}
       </nav>
 
-      {/* Background Overlay */}
+      {/* Backdrop Overlay matching standard project modal blur */}
       {isOpen && (
         <div
-          className="fixed inset-0 z-40 bg-black/40 md:hidden"
+          className="fixed inset-0 z-40 bg-slate-900/60 backdrop-blur-sm md:hidden"
           onClick={() => setIsOpen(false)}
         />
       )}
