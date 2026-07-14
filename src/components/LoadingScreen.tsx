@@ -1,17 +1,21 @@
+import React from "react";
+
 export default function LoadingScreen() {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-white">
-      <div className="text-center">
+    <div className="flex min-h-screen items-center justify-center bg-slate-50 px-6">
+      <div className="text-center max-w-xs sm:max-w-sm w-full">
         {/* Animated Spinning Circle */}
         <div className="flex justify-center">
-          <div className="h-12 w-12 animate-spin rounded-full border-4 border-gray-200 border-t-blue-600"></div>
+          <div className="h-10 w-10 animate-spin rounded-full border-[3px] border-slate-200 border-t-blue-600"></div>
         </div>
 
         {/* Title */}
-        <h1 className="mt-6 text-3xl font-bold text-gray-900">ProgramFit</h1>
+        <h1 className="mt-5 text-xl sm:text-2xl font-bold text-slate-900 tracking-tight">
+          Program<span className="text-blue-600">Fit</span>
+        </h1>
 
         {/* Subtitle */}
-        <p className="mt-2 text-gray-500">
+        <p className="mt-2 text-sm text-slate-500 leading-relaxed">
           Preparing your personalized career assessment...
         </p>
       </div>
