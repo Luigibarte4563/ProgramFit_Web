@@ -20,32 +20,35 @@ ProgramFit guides students through a structured assessment questionnaire, evalua
 
 ## ⚡ Core Features
 
-* **🔐 Secure Authentication:** Seamless Google Sign-In powered by Firebase Auth.
-* **📋 Smart Questionnaire:** Interactive career assessment utilizing an intuitive Likert scale.
-* **📊 Real-Time Analytics:** Live tracking of assessment progress and dynamic state management.
-* **🎯 Targeted Recommendations:** Tailored university program matching based on algorithmic scoring.
-* **💾 Cloud Synced Storage:** Automated saving of assessment history and states via Cloud Firestore.
-* **🔄 Instant Retakes:** Flexibility to clear previous metrics and restart the assessment journey anytime.
-* **🎨 Neo-Brutalist UI:** A distinct visual identity featuring hard offset shadows, flat colors, and bold typography.
+- **🔐 Secure Authentication:** Seamless Google Sign-In powered by Firebase Auth.
+- **📋 Smart Questionnaire:** Interactive career assessment utilizing an intuitive Likert scale with a shuffled question order on every attempt to prevent response bias.
+- **📊 Real-Time Analytics:** Live tracking of assessment progress and dynamic state management.
+- **🎯 Targeted Recommendations:** Tailored university program matching based on algorithmic scoring.
+- **💾 Cloud Synced Storage:** Automated saving of assessment history and states via Cloud Firestore.
+- **🔄 Instant Retakes:** Flexibility to clear previous metrics and restart the assessment journey anytime.
+- **🎨 Neo-Brutalist UI:** A distinct visual identity featuring hard offset shadows, flat colors, and bold typography.
 
 ---
 
 ## 🛠️ Tech Stack & Ecosystem
 
 ### Frontend Core
-* **Framework:** React 19
-* **Language:** TypeScript
-* **Build Tool:** Vite
-* **Routing:** React Router DOM
+
+- **Framework:** React 19
+- **Language:** TypeScript
+- **Build Tool:** Vite
+- **Routing:** React Router DOM
 
 ### Styling & UI
-* **CSS Framework:** Tailwind CSS
-* **Design Language:** Soft Neo-Brutalist
+
+- **CSS Framework:** Tailwind CSS
+- **Design Language:** Soft Neo-Brutalist
 
 ### Backend & Infrastructure
-* **Authentication:** Firebase Authentication
-* **Database:** Cloud Firestore
-* **Hosting:** GitHub Pages
+
+- **Authentication:** Firebase Authentication
+- **Database:** Cloud Firestore
+- **Hosting:** GitHub Pages
 
 ---
 
@@ -55,26 +58,27 @@ ProgramFit bridges the gap between raw brutalism and modern accessibility.
 
 ### Color Palette
 
-| Token | Purpose | Hex Code | Preview |
-| :--- | :--- | :--- | :--- |
-| `bg-main` | Application Background | `#F7EBE1` | ![](https://via.placeholder.com/15/F7EBE1/000000?text=+) |
-| `brand-primary` | Primary Accent / Callouts | `#2F8CE5` | ![](https://via.placeholder.com/15/2F8CE5/000000?text=+) |
-| `shadow-hard` | Neo-Brutalist Offset Shadows | `#1D3557` | ![](https://via.placeholder.com/15/1D3557/000000?text=+) |
-| `text-primary` | Main Typography | `#000000` | ![](https://via.placeholder.com/15/000000/000000?text=+) |
-| `text-secondary`| Subheadings & Captions | `#0D1B2A` | ![](https://via.placeholder.com/15/0D1B2A/000000?text=+) |
-| `bg-card` | Container Backgrounds | `#FFFFFF` | ![](https://via.placeholder.com/15/FFFFFF/000000?text=+) |
-| `border-ui` | Structural Borders | `#C5C5C5` | ![](https://via.placeholder.com/15/C5C5C5/000000?text=+) |
+| Token            | Purpose                      | Hex Code  | Preview                                                  |
+| :--------------- | :--------------------------- | :-------- | :------------------------------------------------------- |
+| `bg-main`        | Application Background       | `#F7EBE1` | ![](https://via.placeholder.com/15/F7EBE1/000000?text=+) |
+| `brand-primary`  | Primary Accent / Callouts    | `#2F8CE5` | ![](https://via.placeholder.com/15/2F8CE5/000000?text=+) |
+| `shadow-hard`    | Neo-Brutalist Offset Shadows | `#1D3557` | ![](https://via.placeholder.com/15/1D3557/000000?text=+) |
+| `text-primary`   | Main Typography              | `#000000` | ![](https://via.placeholder.com/15/000000/000000?text=+) |
+| `text-secondary` | Subheadings & Captions       | `#0D1B2A` | ![](https://via.placeholder.com/15/0D1B2A/000000?text=+) |
+| `bg-card`        | Container Backgrounds        | `#FFFFFF` | ![](https://via.placeholder.com/15/FFFFFF/000000?text=+) |
+| `border-ui`      | Structural Borders           | `#C5C5C5` | ![](https://via.placeholder.com/15/C5C5C5/000000?text=+) |
 
 ### Structural Rules
-* **Shadows:** High-contrast, unblurred `$offset` strokes using `#1D3557`.
-* **Borders:** Thick, defined boundaries separating UI modules.
-* **Layout:** Grid-aligned, highly structured, card-based responsive views.
+
+- **Shadows:** High-contrast, unblurred `$offset` strokes using `#1D3557`.
+- **Borders:** Thick, defined boundaries separating UI modules.
+- **Layout:** Grid-aligned, highly structured, card-based responsive views.
 
 ---
 
 ## 📁 Project Architecture
 
-```text
+````text
 src/
 ├── components/           # Presentation & Interactive UI Modules
 │   ├── Assessment.tsx    # Questionnaire Engine
@@ -105,7 +109,7 @@ src/
 ```bash
 git clone https://github.com/Luigibarte4563/ProgramFit_Web.git
 cd ProgramFit_Web
-```
+````
 
 ## 2. Install Dependencies
 
@@ -130,12 +134,12 @@ VITE_FIREBASE_APP_ID=YOUR_APP_ID
 
 # ▶️ Script Commands
 
-| Task | Command | Description |
-|------|---------|-------------|
-| Development | `npm run dev` | Launches the local development server at `http://localhost:5173/` |
-| Network Host | `npm run dev -- --host` | Shares the development server across your local network (LAN). |
-| Production Build | `npm run build` | Builds and optimizes the application into the `dist` directory. |
-| Preview Build | `npm run preview` | Runs a local server to preview the production build. |
+| Task             | Command                 | Description                                                       |
+| ---------------- | ----------------------- | ----------------------------------------------------------------- |
+| Development      | `npm run dev`           | Launches the local development server at `http://localhost:5173/` |
+| Network Host     | `npm run dev -- --host` | Shares the development server across your local network (LAN).    |
+| Production Build | `npm run build`         | Builds and optimizes the application into the `dist` directory.   |
+| Preview Build    | `npm run preview`       | Runs a local server to preview the production build.              |
 
 ---
 
@@ -158,15 +162,19 @@ Dynamic Career Results
 ```
 
 ### 🔐 Authentication
+
 Users securely authenticate using **Firebase Google Authentication** through a Google sign-in popup.
 
 ### 📝 Evaluation
+
 The system loads the assessment questionnaire and records user responses using React state management for real-time interaction.
 
 ### ☁️ Synchronization
+
 Upon assessment completion, responses and calculated scores are securely stored in **Cloud Firestore** under the authenticated user's unique Firebase UID.
 
 ### 🎯 Results
+
 The application analyzes the collected responses and maps them to predefined university program categories, generating personalized career recommendations.
 
 ---
