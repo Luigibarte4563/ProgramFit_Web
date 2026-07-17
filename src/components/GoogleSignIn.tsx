@@ -1,5 +1,33 @@
 import React, { useMemo } from "react";
 import { signInWithGoogle } from "../firebase/auth";
+// Assuming you have a signOut function exported from your firebase auth file
+// import { logoutUser } from "../firebase/auth";
+
+// 1 hour in milliseconds (60 minutes * 60 seconds * 1000ms)
+export const SESSION_DURATION = 1 * 60 * 60 * 1000;
+
+// // 1 minute in milliseconds for testing purposes
+// const SESSION_DURATION = 1 * 60 * 1000;
+
+/**
+ * Call this function inside your root App.tsx or your AuthProvider
+ * to automatically kick out expired sessions on load.
+ */
+export const checkSessionExpiration = async (logoutFn: () => Promise<void>) => {
+  const loginTimestamp = localStorage.getItem("login_timestamp");
+
+  if (loginTimestamp) {
+    const timeElapsed = Date.now() - parseInt(loginTimestamp, 10);
+    if (timeElapsed > SESSION_DURATION) {
+      console.log("Session expired. Logging out automatically...");
+      localStorage.removeItem("login_timestamp");
+
+      // Simply fire the logout task.
+      // Your App.tsx will catch the state change and clear the screen instantly.
+      await logoutFn();
+    }
+  }
+};
 
 // Modern SVG Warning Icon Component
 function AlertTriangleIcon() {
@@ -38,7 +66,12 @@ export default function GoogleSignIn() {
   const handleLogin = async () => {
     try {
       const user = await signInWithGoogle();
-      console.log(user);
+
+      if (user) {
+        // Capture the exact login timestamp on successful authentication
+        localStorage.setItem("login_timestamp", Date.now().toString());
+        console.log("Logged in successfully:", user);
+      }
     } catch (error) {
       console.error(error);
     }
@@ -46,11 +79,6 @@ export default function GoogleSignIn() {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-[#F7EBE1] px-4 sm:px-6 lg:px-8">
-      {/* Container features:
-        - Background: Pure White (#FFFFFF)
-        - Border: Custom Muted Gray (#C5C5C5)
-        - Hard Shadow: Custom Dark Blue/Grey (#1D3557) with a structural style 
-      */}
       <div className="max-w-md w-full space-y-8 p-8 bg-[#FFFFFF] rounded-2xl border-2 border-[#C5C5C5] shadow-[8px_8px_0px_0px_#1D3557] transition-all">
         {/* Branding */}
         <div className="text-center">
@@ -134,7 +162,8 @@ export default function GoogleSignIn() {
 
         <div className="text-center pt-2">
           <p className="text-xs text-[#C5C5C5]">
-            Secure authentication powered by Firebase.
+            Secure authentication powered by Firebase. Session testing window
+            active.
           </p>
         </div>
       </div>
