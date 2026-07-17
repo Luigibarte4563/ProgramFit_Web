@@ -1,3 +1,9 @@
+export interface AssessmentQuestion {
+  id: number;
+  category: string;
+  question: string;
+}
+
 export const assessmentQuestions = [
   // Technology
   {

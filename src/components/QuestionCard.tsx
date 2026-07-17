@@ -1,26 +1,25 @@
-import { assessmentQuestions } from "../data/assessmentQuestions";
+import { type AssessmentQuestion } from "../data/assessmentQuestions";
 import LikertScale from "./LikertScale";
 
 interface QuestionCardProps {
-  index: number;
+  // displayIndex is the sequential step number the user sees (e.g., 1, 2, 3...)
+  displayIndex: number;
+  question: AssessmentQuestion;
   answer?: number;
   onAnswer: (value: number) => void;
 }
 
 export default function QuestionCard({
-  index,
+  displayIndex,
+  question,
   answer,
   onAnswer,
 }: QuestionCardProps) {
-  const question = assessmentQuestions[index];
-
   if (!question) {
     return (
       <div className="p-1">
         <div className="rounded-xl border-2 border-[#EA4335] bg-[#FFFFFF] p-4 shadow-[4px_4px_0px_0px_#1D3557] text-center">
-          <p className="font-bold text-[#EA4335]">
-            Invalid question index: {index}
-          </p>
+          <p className="font-bold text-[#EA4335]">Invalid question card data</p>
         </div>
       </div>
     );
@@ -28,12 +27,11 @@ export default function QuestionCard({
 
   return (
     <div className="p-1 w-full max-w-3xl mx-auto">
-      {/* Reduced internal padding from p-6/p-8 to p-4/p-5 and gap from gap-6 to gap-4 */}
       <div className="rounded-2xl bg-[#FFFFFF] p-4 md:p-5 border-2 border-[#C5C5C5] shadow-[5px_5px_0px_0px_#1D3557] flex flex-col gap-4">
-        {/* Header: Tightened padding and layout */}
+        {/* Header */}
         <div className="flex items-center justify-between gap-2 border-b-2 border-[#F7EBE1] pb-2.5">
           <h2 className="text-lg md:text-xl font-black text-[#000000]">
-            Question <span className="text-[#2F8CE5]">#{question.id}</span>
+            Question <span className="text-[#2F8CE5]">#{displayIndex}</span>
           </h2>
 
           {question.category && (
@@ -43,12 +41,12 @@ export default function QuestionCard({
           )}
         </div>
 
-        {/* Question Text: Reduced text sizing slightly for better density */}
+        {/* Question Text */}
         <p className="text-base md:text-lg font-bold text-[#0D1B2A] leading-snug">
           {question.question}
         </p>
 
-        {/* Likert Scale Container: Removed extra top padding */}
+        {/* Likert Scale Container */}
         <div className="w-full">
           <LikertScale value={answer} onChange={onAnswer} />
         </div>

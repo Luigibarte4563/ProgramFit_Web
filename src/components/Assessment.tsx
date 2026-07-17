@@ -5,84 +5,114 @@ import { calculateResults } from "../utils/calculateResults";
 import ProgressBar from "./ProgressBar";
 import QuestionCard from "./QuestionCard";
 
-import { assessmentQuestions } from "../data/assessmentQuestions";
+import {
+  assessmentQuestions,
+  type AssessmentQuestion,
+} from "../data/assessmentQuestions";
 import {
   loadAssessmentProgress,
   saveAssessmentProgress,
   saveAssessmentResults,
 } from "../firebase/assessment";
 
+// Fisher-Yates shuffle utility
+function shuffleArray<T>(array: T[]): T[] {
+  const shuffled = [...array];
+  for (let i = shuffled.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+  }
+  return shuffled;
+}
+
+interface ShuffledItem {
+  originalIndex: number;
+  question: AssessmentQuestion;
+}
+
 export default function Assessment() {
   const navigate = useNavigate();
 
-  const [currentQuestion, setCurrentQuestion] = useState(0);
+  // 1. Pair questions with their original index, THEN shuffle them once on mount
+  const [shuffledMetadata] = useState<ShuffledItem[]>(() => {
+    const records = assessmentQuestions.map((q, idx) => ({
+      originalIndex: idx,
+      question: q,
+    }));
+    return shuffleArray(records);
+  });
 
-  const [answers, setAnswers] = useState<number[]>(
+  // Track the current step index in the visual flow (0 to length - 1)
+  const [currentStep, setCurrentStep] = useState(0);
+
+  // Keep the flat answer pool mapped to the ORIGINAL question index sizes
+  const [answers, setAnswers] = useState<number[]>(() =>
     Array(assessmentQuestions.length).fill(0),
   );
 
   const [loaded, setLoaded] = useState(false);
 
-  // Load saved assessment once
+  // Load saved assessment progress safely
   useEffect(() => {
     async function loadProgress() {
       const progress = await loadAssessmentProgress();
-
       if (progress) {
         setAnswers(progress.answers);
-        setCurrentQuestion(progress.currentQuestion);
+        setCurrentStep(progress.currentQuestion);
       }
-
       setLoaded(true);
     }
-
     loadProgress();
   }, []);
 
-  // Auto-save whenever answers or current question changes
+  // Auto-save whenever answers or current visual step changes
   useEffect(() => {
     if (!loaded) return;
+    saveAssessmentProgress(answers, currentStep);
+  }, [answers, currentStep, loaded]);
 
-    saveAssessmentProgress(answers, currentQuestion);
-  }, [answers, currentQuestion, loaded]);
+  // Extract metadata for the active visual step
+  const activeItem = shuffledMetadata[currentStep];
+  const activeOriginalIndex = activeItem?.originalIndex;
 
   const handleAnswer = (value: number) => {
+    if (activeOriginalIndex === undefined) return;
     const updated = [...answers];
-    updated[currentQuestion] = value;
-
+    // Write directly to its true index so data storage layout doesn't break
+    updated[activeOriginalIndex] = value;
     setAnswers(updated);
   };
 
   const handleNext = () => {
-    if (currentQuestion < assessmentQuestions.length - 1) {
-      setCurrentQuestion((prev) => prev + 1);
+    if (currentStep < shuffledMetadata.length - 1) {
+      setCurrentStep((prev) => prev + 1);
     }
   };
 
   const handleBack = () => {
-    if (currentQuestion > 0) {
-      setCurrentQuestion((prev) => prev - 1);
+    if (currentStep > 0) {
+      setCurrentStep((prev) => prev - 1);
     }
   };
 
   const handleSelectQuestion = (index: number) => {
-    setCurrentQuestion(index);
+    setCurrentStep(index);
   };
 
-  const answeredQuestions = answers.filter((answer) => answer !== 0).length;
+  // Evaluation stats based on whether matching elements have values
+  const answeredQuestions = answers.filter((ans) => ans !== 0).length;
+  const isAssessmentComplete = answeredQuestions === shuffledMetadata.length;
 
-  const isAssessmentComplete = answeredQuestions === assessmentQuestions.length;
-
-  const isFirstQuestion = currentQuestion === 0;
-  const isLastQuestion = currentQuestion === assessmentQuestions.length - 1;
+  const isFirstQuestion = currentStep === 0;
+  const isLastQuestion = currentStep === shuffledMetadata.length - 1;
 
   const handleFinish = async () => {
     if (!isAssessmentComplete) return;
 
-    await saveAssessmentProgress(answers, currentQuestion);
+    await saveAssessmentProgress(answers, currentStep);
 
-    const results = calculateResults(answers);
-
+    // Passes structural array positions seamlessly now
+    const results = calculateResults(answers, assessmentQuestions);
     await saveAssessmentResults(results);
 
     navigate("/results");
@@ -115,11 +145,14 @@ export default function Assessment() {
           <h2 className="text-xl font-bold text-[#000000] mb-4 border-b-2 border-[#F7EBE1] pb-2">
             Assessment Progress
           </h2>
+          {/* Map layout values cleanly to what the progress bar expects */}
           <ProgressBar
-            current={currentQuestion + 1}
+            current={currentStep + 1}
             answered={answeredQuestions}
-            total={assessmentQuestions.length}
-            answers={answers}
+            total={shuffledMetadata.length}
+            answers={shuffledMetadata.map(
+              (item) => answers[item.originalIndex],
+            )}
             onSelectQuestion={handleSelectQuestion}
           />
         </div>
@@ -127,8 +160,9 @@ export default function Assessment() {
         {/* Question Card Container */}
         <div className="w-full bg-[#FFFFFF] rounded-2xl border-2 border-[#C5C5C5] p-6 md:p-8 shadow-[8px_8px_0px_0px_#1D3557]">
           <QuestionCard
-            index={currentQuestion}
-            answer={answers[currentQuestion]}
+            displayIndex={currentStep + 1}
+            question={activeItem?.question}
+            answer={answers[activeOriginalIndex]}
             onAnswer={handleAnswer}
           />
         </div>

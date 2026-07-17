@@ -17,19 +17,30 @@ export default function ProgressBar({
 }: ProgressBarProps) {
   const percentage = (answered / total) * 100;
 
-  // Create a ref to store references to all the button elements
   const buttonRefs = useRef<(HTMLButtonElement | null)[]>([]);
+  // Keep track of whether this is the very first time the component renders
+  const isFirstRender = useRef(true);
 
   // Automatically scroll to the active question whenever 'current' changes
   useEffect(() => {
+    // FIX: Skip scrolling on the initial load to prevent the page from layout-jumping
+    if (isFirstRender.current) {
+      isFirstRender.current = false;
+      return;
+    }
+
     const activeIndex = current - 1;
     const activeButton = buttonRefs.current[activeIndex];
 
     if (activeButton) {
-      activeButton.scrollIntoView({
-        behavior: "smooth",
-        block: "nearest",
-        inline: "center",
+      // Use requestAnimationFrame to ensure the DOM has finished updates/painting
+      requestAnimationFrame(() => {
+        activeButton.scrollIntoView({
+          behavior: "smooth",
+          block: "nearest",
+          inline: "center",
+          // 'nearest' prevents the entire web page viewport from jerking vertically
+        });
       });
     }
   }, [current]);
@@ -72,7 +83,6 @@ export default function ProgressBar({
           const isCurrent = index + 1 === current;
           const isAnswered = answer !== 0;
 
-          // Compute dynamic styling matching your design token behavior
           let dynamicClasses = "";
           if (isCurrent) {
             dynamicClasses =

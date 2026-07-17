@@ -29,13 +29,16 @@ const descriptions: Record<string, string> = {
     "You are interested in justice, public safety, and law enforcement.",
 };
 
+import type { AssessmentQuestion } from "../data/assessmentQuestions";
+
 export function calculateResults(
-  answers: number[]
+  answers: number[],
+  questions: AssessmentQuestion[]
 ): AssessmentResult[] {
   const categoryScores: Record<string, number> = {};
   const categoryMaxScores: Record<string, number> = {};
 
-  assessmentQuestions.forEach((question, index) => {
+  questions.forEach((question, index) => {
     const category = question.category;
 
     categoryScores[category] =
